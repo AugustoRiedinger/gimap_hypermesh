@@ -8,7 +8,9 @@
   - [[#about][About]]
   - [[#creating-the-base-model][Creating the base model]]
   - [[#importing-the-base-model][Importing the base model]]
+  - [[#how-to-move-in-hypermesh][How to move in Hypermesh]]
   - [[#deleting-lines][Deleting lines]]
+  - [[#][]]
 
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
@@ -39,6 +41,15 @@ Now, in Hypermesh go to =File -> Import -> Geometry=. You will see this window i
 [[file:../images/importingHypermesh.png]]
 
 Then, with the folder symbol search for the =.dxf= file and then click in =Import= on the bottom left side.
+** How to move in Hypermesh
+In order to affect the view you will have to always mantain the button =Ctrl= pressed in your keyboard.
+
+ + =Ctrl + Mouse Middle Button= resets the view.
+ + =Ctrl + Mouse Wheel=: zoom in, zoom out.
+ + =Ctrl + Drag Mouse Middle Button=: mark an area to make zoom.
+ + =Ctrl + Mouse Left Button=: rotate on a defined point.
+ + =Ctrl + Mouse Right Button=: move.
+
 ** Deleting lines
 The base model has extra lines used to define parameters for variables. They can be easily deleted pressing the =F2= key or the "/X/" symbol on the bottom panel (seventh symbol counting from the left). You will see the following screen:
 
@@ -53,3 +64,4 @@ With the downward facing arrow to the left select =lines= instead of the default
 [[file:../images/deletingLines2.png]]
 
 After marking all the lines to delete, click on the =delete entity= button on the bottom right of the panel. The lines will then be deleted, and you can press =Esc= or the button =return= to go back to the main panel.
+**
