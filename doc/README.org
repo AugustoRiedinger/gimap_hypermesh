@@ -12,6 +12,7 @@
   - [[#deleting-lines][Deleting lines]]
   - [[#creating-the-main-surface][Creating the main surface]]
   - [[#adjusting-the-tolerance][Adjusting the tolerance]]
+  - [[#trimming-the-lines][Trimming the lines]]
 
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
@@ -100,3 +101,31 @@ Here, change the value of =cleanup tol= to =1e-7=. Then, press the =mesh= button
 [[file:../images/toleranceMesh.png]]
 
 We should change the =element size= to =1e-5= and the =node tol= to 1e-6. We can now press =Esc= and go back to the main panel.
+** Trimming the lines
+We should now trim the lines to create the different surfaces. For this, press =Geom= on the right side of the main panel, and then go to =surface edit=. You should see a panel similar to this:
+
+#+CAPTION:Surface Edit
+#+LABEL:fig:surfaceEdit
+[[file:../images/surfaceEdit.png]]
+
+Here, in the second column (middel), press the downward facing arrow and change the default =free lines= to just =lines=. Just below that, press the scroll button and change the default =along a vector= to =normal to the surface=. You should now have a panel that looks the same as the figure above.
+
+The procedure to trim the lines is as follows:
+
+  1. Press the =surfs= button on the first column (to the left) and select the main surface. It should now appear in white.
+
+#+CAPTION:Surface Edit Select Surface
+#+LABEL:fig:surfaceEditSelectSurface
+[[file:../images/surfaceEditSelectSurface.png]]
+
+ 2. Press the =line= button on the mid column, and the press it again to select =displayed= and mark all the lines to trim.
+
+#+CAPTION:Surface Edit Select Lines
+#+LABEL:fig:surfaceEditSelectLines
+[[file:../images/surfaceEditSelectLines.png]]
+
+ 3. Now we can press =trim= on the right side and the surface will be trimmed.
+
+#+CAPTION:Surface Edit Trim
+#+LABEL:fig:surfaceEditTrim
+[[file:../images/surfaceEditTrim.png]]
