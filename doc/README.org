@@ -11,6 +11,7 @@
   - [[#how-to-move-in-hypermesh][How to move in Hypermesh]]
   - [[#deleting-lines][Deleting lines]]
   - [[#creating-the-main-surface][Creating the main surface]]
+  - [[#adjusting-the-tolerance][Adjusting the tolerance]]
 
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
@@ -78,10 +79,24 @@ Now, press the downwards facing arrow and change the default =mesh, keep surf= o
 #+LABEL:fig:splineExteriorLines
 [[file:../images/splineExteriorLines.png]]
 
-You can now press the button =create= and the surface will be created. In order to renderize it you will have to press the =Shaded Geometry and Surface Edges= button in the top side of the panel (12th counting from the left):
+You can now press the button =create= and the surface will be created. In order to renderize it you will have to press the =Shaded Geometry and Surface Edges= button on the top side of the panel (12th counting from the left):
 
 #+CAPTION:Renderized Surface
 #+LABEL:fig:splineRenderizedSurface
 [[file:../images/splineRenderizedSurface.png]]
 
 Press =Esc= or =return= to go back to the main panel.
+** Adjusting the tolerance
+This step is necessary in order to create tinier elements. Press the key =o= and you will be redirected to the following panel:
+
+#+CAPTION:Tolerance Geometry
+#+LABEL:fig:toleranceGeometry
+[[file:../images/toleranceGeometry.png]]
+
+Here, change the value of =cleanup tol= to =1e-7=. Then, press the =mesh= button on the left side:
+
+#+CAPTION:Tolerance Mehs
+#+LABEL:fig:toleranceMesh
+[[file:../images/toleranceMesh.png]]
+
+We should change the =element size= to =1e-5= and the =node tol= to 1e-6. We can now press =Esc= and go back to the main panel.
