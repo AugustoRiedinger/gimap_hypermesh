@@ -9,12 +9,32 @@ The sole objective of this case is to create the boundary layers of a continous 
 #+CAPTION:Configuration of the Magnet-Ferro test case
 #+LABEL:fig:magnet-ferroConfiguration
 [[file:../images/magnet-ferroConfiguration.png]]
+** Table of contents :toc:
+- [[#case-permeable-with-ferro-and-boundary-layers][Case: Permeable with Ferro and Boundary Layers]]
+  - [[#about][About]]
+  - [[#creating-the-base-model][Creating the base model]]
+  - [[#importing-the-base-model][Importing the base model]]
 
 ** Creating the base model
-The base model (lines) has been created with the CAD tool OnShape:
+The base model (lines) were created with the CAD tool OnShape:
 
 #+CAPTION:Magnet-ferro OnShape base model
 #+LABEL:fig:magnet-ferroOnShape
 [[file:../images/magnet-ferroOnShape.png]]
 
 The main advantage of using this tool instead of Hypermesh is that the lines can be defined as a function of some variables. This is, for example, the size of the magnet has been defined in such a way that if we would like to change it, the boundary lines and the ferro would change accordingly mantaining the configuration.
+
+** Importing the base model
+To import the base model to Hypermesh, you will need to first export it from OnShape. In order to just export the *lines*, you will have to export the *Sketch part*. This is, right click on the sketch (the pencil symbol; in my case =Top [Sketch]=) and then go to =Export as DXF/DWG ...=. You will then see a window as follows; we will need to export the model as a =DXF= file for Hypermesh to be able to read it.
+
+#+CAPTION:Exporting the model from OnShape
+#+LABEL:fig:exportingOnShape
+[[file:../images/exportingOnShape.png]]
+
+Now, in Hypermesh go to =File -> Import -> Geometry=. You will see this window in the left side:
+
+#+CAPTION:Importing to Hypermesh
+#+LABEL:fig:importingHypermesh
+[[file:../images/importingHypermesh.png]]
+
+Then, with the folder symbol search for the =.dxf= file and then click in =Import= on the bottom left side.
