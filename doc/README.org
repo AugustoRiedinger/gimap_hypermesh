@@ -13,6 +13,7 @@
   - [[#creating-the-main-surface][Creating the main surface]]
   - [[#adjusting-the-tolerance][Adjusting the tolerance]]
   - [[#trimming-the-lines][Trimming the lines]]
+  - [[#meshing-with-automesh][Meshing with automesh]]
 
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
@@ -129,3 +130,15 @@ The procedure to trim the lines is as follows:
 #+CAPTION:Surface Edit Trim
 #+LABEL:fig:surfaceEditTrim
 [[file:../images/surfaceEditTrim.png]]
+** Meshing with automesh
+In the main panel, press the =2D= button on the right side and then =automesh=. You should see a panel similar to this:
+
+#+CAPTION:automesh
+#+LABEL:fig:automesh
+[[file:../images/automesh.png]]
+
+Then, change the default =mixed= to =quad only= and the =element size= to =0.01=. Now, you can press the =surfs= button on the left, and the press it again to select =all= and mark every surface. We can press now mesh to go to the next panel:
+
+#+CAPTION:automesh2
+#+LABEL:fig:automesh2
+[[file:../images/automesh2.png]]
