@@ -1,0 +1,20 @@
+#+TITLE: How To Hypermesh
+#+AUTHOR: A. Riedinger
+
+* Case: Permeable with Ferro and Boundary Layers
+
+** About
+The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
+
+#+CAPTION:Configuration of the Magnet-Ferro test case
+#+LABEL:fig:magnet-ferroConfiguration
+[[file:../images/magnet-ferroConfiguration.png]]
+
+** Creating the base model
+The base model (lines) has been created with the CAD tool OnShape:
+
+#+CAPTION:Magnet-ferro OnShape base model
+#+LABEL:fig:magnet-ferroOnShape
+[[file:../images/magnet-ferroOnShape.png]]
+
+The main advantage of using this tool instead of Hypermesh is that the lines can be defined as a function of some variables. This is, for example, the size of the magnet has been defined in such a way that if we would like to change it, the boundary lines and the ferro would change accordingly mantaining the configuration.
