@@ -3,18 +3,19 @@
 
 * Case: Permeable with Ferro and Boundary Layers
 
+** Table of contents :toc:
+- [[#case-permeable-with-ferro-and-boundary-layers][Case: Permeable with Ferro and Boundary Layers]]
+  - [[#about][About]]
+  - [[#creating-the-base-model][Creating the base model]]
+  - [[#importing-the-base-model][Importing the base model]]
+  - [[#deleting-lines][Deleting lines]]
+
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
 
 #+CAPTION:Configuration of the Magnet-Ferro test case
 #+LABEL:fig:magnet-ferroConfiguration
 [[file:../images/magnet-ferroConfiguration.png]]
-** Table of contents :toc:
-- [[#case-permeable-with-ferro-and-boundary-layers][Case: Permeable with Ferro and Boundary Layers]]
-  - [[#about][About]]
-  - [[#creating-the-base-model][Creating the base model]]
-  - [[#importing-the-base-model][Importing the base model]]
-
 ** Creating the base model
 The base model (lines) were created with the CAD tool OnShape:
 
@@ -38,3 +39,17 @@ Now, in Hypermesh go to =File -> Import -> Geometry=. You will see this window i
 [[file:../images/importingHypermesh.png]]
 
 Then, with the folder symbol search for the =.dxf= file and then click in =Import= on the bottom left side.
+** Deleting lines
+The base model has extra lines used to define parameters for variables. They can be easily deleted pressing the =F2= key or the "/X/" symbol on the bottom panel (seventh symbol counting from the left). You will see the following screen:
+
+#+CAPTION:Delete panel for deleting lines
+#+LABEL:fig:deletingLines
+[[file:../images/deletingLines.png]]
+
+With the downward facing arrow to the left select =lines= instead of the default =elems=. Now, you can click on the lines you want to delete (marked on white):
+
+#+CAPTION:Selecting the lines to delete
+#+LABEL:fig:deletingLines2
+[[file:../images/deletingLines2.png]]
+
+After marking all the lines to delete, click on the =delete entity= button on the bottom right of the panel. The lines will then be deleted, and you can press =Esc= or the button =return= to go back to the main panel.
