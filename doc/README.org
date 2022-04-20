@@ -10,7 +10,7 @@
   - [[#importing-the-base-model][Importing the base model]]
   - [[#how-to-move-in-hypermesh][How to move in Hypermesh]]
   - [[#deleting-lines][Deleting lines]]
-  - [[#][]]
+  - [[#creating-the-main-surface][Creating the main surface]]
 
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
@@ -65,3 +65,23 @@ With the downward facing arrow to the left select =lines= instead of the default
 
 After marking all the lines to delete, click on the =delete entity= button on the bottom right of the panel. The lines will then be deleted, and you can press =Esc= or the button =return= to go back to the main panel.
 **
+** Creating the main surface
+On the main panel, look to right side and click on =2D=. Then, click the button =spline=. You should see the following panel:
+
+#+CAPTION:Spline panel
+#+LABEL:fig:spline
+[[file:../images/spline.png]]
+
+Now, press the downwards facing arrow and change the default =mesh, keep surf= option to =surface only= on the panel. You can now select the exterior lines of the surface:
+
+#+CAPTION:Selecting the exterior lines to create the surface
+#+LABEL:fig:splineExteriorLines
+[[file:../images/splineExteriorLines.png]]
+
+You can now press the button =create= and the surface will be created. In order to renderize it you will have to press the =Shaded Geometry and Surface Edges= button in the top side of the panel (12th counting from the left):
+
+#+CAPTION:Renderized Surface
+#+LABEL:fig:splineRenderizedSurface
+[[file:../images/splineRenderizedSurface.png]]
+
+Press =Esc= or =return= to go back to the main panel.
