@@ -1,5 +1,6 @@
 #+TITLE: How To Hypermesh
 #+AUTHOR: A. Riedinger
+#+STARTUP: folded
 
 * Case: Permeable with Ferro and Boundary Layers
 
@@ -119,7 +120,7 @@ The procedure to trim the lines is as follows:
 #+LABEL:fig:surfaceEditSelectSurface
 [[file:../images/surfaceEditSelectSurface.png]]
 
- 2. Press the =line= button on the mid column, and the press it again to select =displayed= and mark all the lines to trim.
+ 2. Press the =line= button on the mid column, and the press it again to select =displayed= and mar                                                                                                                                                                        k all the lines to trim.
 
 #+CAPTION:Surface Edit Select Lines
 #+LABEL:fig:surfaceEditSelectLines
@@ -137,8 +138,30 @@ In the main panel, press the =2D= button on the right side and then =automesh=. 
 #+LABEL:fig:automesh
 [[file:../images/automesh.png]]
 
-Then, change the default =mixed= to =quad only= and the =element size= to =0.01=. Now, you can press the =surfs= button on the left, and the press it again to select =all= and mark every surface. We can press now mesh to go to the next panel:
+Then, change the default =mixed= to =quad only= and the =element size= to =0.01=. Now, you can press the =surfs= button on the left, and start picking every surface except the boundary layers. The end result should look like this (selected surfaces marked in white):
 
-#+CAPTION:automesh2
-#+LABEL:fig:automesh2
-[[file:../images/automesh2.png]]
+#+CAPTION:automesh3
+#+LABEL:fig:automesh3
+[[file:../images/automesh3.png]]
+
+We can now press the =mesh= button on the right side and we should see a meshing like this:
+
+#+CAPTION:automesh4
+#+LABEL:fig:automesh4
+[[file:../images/automesh4.png]]
+
+Now we press the button =return=, and we can start selecting the boundary layers. It should look like this:
+
+#+CAPTION:automesh5
+#+LABEL:fig:automesh5
+[[file:../images/automesh5.png]]
+
+Now we shall change the tolerance or =element size= to 0.001 and press the button =mesh=. The end result should look like this:
+
+#+CAPTION:automesh6
+#+LABEL:fig:automesh6
+[[file:../images/automesh6.png]]
+
+#+CAPTION:automesh7
+#+LABEL:fig:automesh7
+[[file:../images/automesh7.png]]
