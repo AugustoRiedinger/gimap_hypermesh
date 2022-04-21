@@ -15,6 +15,7 @@
   - [[#adjusting-the-tolerance][Adjusting the tolerance]]
   - [[#trimming-the-lines][Trimming the lines]]
   - [[#meshing-with-automesh][Meshing with automesh]]
+  - [[#creating-a-collector-for-the-surface][Creating a collector for the surface]]
 
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
@@ -165,3 +166,19 @@ Now we shall change the tolerance or =element size= to 0.001 and press the butto
 #+CAPTION:automesh7
 #+LABEL:fig:automesh7
 [[file:../images/automesh7.png]]
+** Creating a collector for the surface
+We shall now create a collector for the surface as a preamble to the drag. For this, press the =Components= icon on the top side of the main panel (second icon counting from the left):
+
+#+CAPTION:mainSurface
+#+LABEL:fig:mainSurface
+[[file:../images/mainSurface.png]]
+
+Create a name for the new component in =component name=. In this case, we named the new collector =mainSurface=. We shall then press the =create= button an return to the main panel.
+
+Now, press =Tool= on the right side of the main panel, and then press =organize=. We will now move all the components from =auto1= (the default collector) to the new collector =mainSurface=.
+
+#+CAPTION:mainSurface2
+#+LABEL:fig:mainSurface2
+[[file:../images/mainSurface2.png]]
+
+We select all the elements with the =elems= button, and then we change =dest components= to =mainSurface= as seen in the above figure. We can now press the =move= button and all the elements will be redirected to the new collector.
