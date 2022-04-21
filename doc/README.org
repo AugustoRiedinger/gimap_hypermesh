@@ -16,6 +16,7 @@
   - [[#trimming-the-lines][Trimming the lines]]
   - [[#meshing-with-automesh][Meshing with automesh]]
   - [[#creating-a-collector-for-the-surface][Creating a collector for the surface]]
+  - [[#drag---creating-the-3d-model][Drag - Creating the 3D model]]
 
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
@@ -182,3 +183,24 @@ Now, press =Tool= on the right side of the main panel, and then press =organize=
 [[file:../images/mainSurface2.png]]
 
 We select all the elements with the =elems= button, and then we change =dest components= to =mainSurface= as seen in the above figure. We can now press the =move= button and all the elements will be redirected to the new collector.
+
+Now, in the bottom right side of the main panel, change the collector from =auto1= to =mainSurface=.
+** Drag - Creating the 3D model
+In the main panel - 2D section, press the =drag= button. The steps to follow now are:
+
+ + On the left side of the panel, press =drag elems= instead of =drag geom=.
+ + Select =2d elems= and then select =all=.
+ + Change =N1, N2, N3= to =z-axis=.
+ + Change the =distance= to =1.0= and =on drag= also to =1=.
+
+The options should look like this:
+
+#+CAPTION:drag1
+#+LABEL:fig:drag1
+[[file:../images/drag1.png]]
+
+We can now press the =drag+= button and the end result should look like this:
+
+#+CAPTION:drag2
+#+LABEL:fig:drag2
+[[file:../images/drag2.png]]
