@@ -15,7 +15,7 @@
   - [[#adjusting-the-tolerance][Adjusting the tolerance]]
   - [[#trimming-the-lines][Trimming the lines]]
   - [[#meshing-with-automesh][Meshing with automesh]]
-  - [[#creating-a-collector-for-the-surface][Creating a collector for the surface]]
+  - [[#creating-a-collector-for-the-volume][Creating a collector for the volume]]
   - [[#drag---creating-the-3d-model][Drag - Creating the 3D model]]
 
 ** About
@@ -167,29 +167,21 @@ Now we shall change the tolerance or =element size= to 0.001 and press the butto
 #+CAPTION:automesh7
 #+LABEL:fig:automesh7
 [[file:../images/automesh7.png]]
-** Creating a collector for the surface
-We shall now create a collector for the surface as a preamble to the drag. For this, press the =Components= icon on the top side of the main panel (second icon counting from the left):
+** Creating a collector for the volume
+We shall now create a collector for the volume in order to stack all the elements of the 3D model. For this, press the =Components= icon on the top side of the main panel (second icon counting from the left):
 
 #+CAPTION:mainSurface
 #+LABEL:fig:mainSurface
-[[file:../images/mainSurface.png]]
+[[file:../images/volume.png]]
 
-Create a name for the new component in =component name=. In this case, we named the new collector =mainSurface=. We shall then press the =create= button an return to the main panel.
+Create a name for the new component in =component name= and select a color. In this case, we named the new collector =volume=. We shall then press the =create= button an return to the main panel.
 
-Now, press =Tool= on the right side of the main panel, and then press =organize=. We will now move all the components from =auto1= (the default collector) to the new collector =mainSurface=.
-
-#+CAPTION:mainSurface2
-#+LABEL:fig:mainSurface2
-[[file:../images/mainSurface2.png]]
-
-We select all the elements with the =elems= button, and then we change =dest components= to =mainSurface= as seen in the above figure. We can now press the =move= button and all the elements will be redirected to the new collector.
-
-Now, in the bottom right side of the main panel, change the collector from =auto1= to =mainSurface=.
 ** Drag - Creating the 3D model
-In the main panel - 2D section, press the =drag= button. The steps to follow now are:
+In the main panel - 2D section, press the =drag= button. You *need to be in the =volume= collector we just created*. The steps to follow now are:
 
  + On the left side of the panel, press =drag elems= instead of =drag geom=.
  + Select =2d elems= and then select =all=.
+ + Check that =elems to current comp= is selected in order to move all the elements to the =volume= collector.
  + Change =N1, N2, N3= to =z-axis=.
  + Change the =distance= to =1.0= and =on drag= also to =1=.
 
@@ -203,4 +195,4 @@ We can now press the =drag+= button and the end result should look like this:
 
 #+CAPTION:drag2
 #+LABEL:fig:drag2
-[[file:../images/drag2.png]]
+[[file:../images/drag3.png]]

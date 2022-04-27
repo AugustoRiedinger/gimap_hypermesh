@@ -1,0 +1,1834 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass ../config/classicthesis
+\use_default_options true
+\maintain_unincluded_children false
+\language american
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "beramono" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine biblatex
+\cite_engine_type authoryear
+\biblio_style plainnat
+\biblatex_bibstyle numeric-comp
+\biblatex_citestyle numeric-comp
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+OpenFOAM FSI
+\end_layout
+
+\begin_layout Section
+MAGNETIC SOLVERS
+\end_layout
+
+\begin_layout Subsection
+2D Analysis
+\end_layout
+
+\begin_layout Standard
+For the vector potential the empty boundary condition does not work because
+ it deletes the equations in the normal direction and we need it for the
+ curls.
+ So we must set a zeroGradient BC for the patches that usually should be
+ empty.
+ Thats all.
+\end_layout
+
+\begin_layout Subsection
+multiRegionVectorMagneticFoam
+\end_layout
+
+\begin_layout Itemize
+Hypmemesh side
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Create the magnetic volumes in different collectors but with nodal continuity
+ (no surfaces between each other)
+\end_layout
+
+\begin_layout Itemize
+Create surfaces for the outer boundaries of the domain (top, bot, left,
+ write, etc) and put each one of them in a different collector.
+ It is best o create and outer boundary and a front and back boundary to
+ impose the empty condition (zeroGradient in this solver).
+\end_layout
+
+\begin_layout Itemize
+Export
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+OpenFOAM side 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Method 1
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Execute splitMeshRegions -cellZones -overwrite
+\end_layout
+
+\begin_layout Itemize
+Replace the bondary type 
+\begin_inset Quotes eld
+\end_inset
+
+wall
+\begin_inset Quotes erd
+\end_inset
+
+ in constant/polyMesh with 
+\begin_inset Quotes eld
+\end_inset
+
+patch
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Create the subdirectory structure for each region and copy the neccesary
+ files.
+ 
+\end_layout
+
+\begin_layout Itemize
+Execute copyS in system to copy the configuration files to each region.
+\end_layout
+
+\begin_layout Itemize
+Create magneticProperties dict in each region subdirectory in constant
+\end_layout
+
+\begin_layout Itemize
+Run the case.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Method 2 (recommended)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Copy a full misc directory from one of the previous analysis.
+ I should contain several files: e.g, hmTranslation, fvSolution, controlDict,
+ fvSchemes, etc.
+ etc.
+\end_layout
+
+\begin_layout Itemize
+Edit all files according the region naming of the case.
+ The hmTranslation file is set only in the first lines, the rest should
+ be automatic.
+\end_layout
+
+\begin_layout Itemize
+Enter the misc directory and run hmTranslation.
+\end_layout
+
+\begin_layout Itemize
+Edit the boundary conditions for each region to set the zeroGradient where
+ it is neccessary.
+\end_layout
+
+\begin_layout Itemize
+Run the case.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+If we are using a dynamic analysis it is very important to set correctly
+ the boundary conditions for 2D cases.
+ For the vector potential the empty boundary condition does not work because
+ it deletes the equations in the normal direction and we need it for the
+ curls.
+ So we must set a zeroGradient BC for the patches that usually should be
+ empty.
+ This has an important consequence when we impose the displacement of a
+ certain patch.
+ The problem is that the normal displacement in the lateral patches (in
+ the third, or empty direction) should be set to empty, but then the patch
+ type must be empty (otherwise it does not work), and then if it is set
+ to empty the A field cannot be set to zeroGradient, since it is not possible
+ to set empty and zeroGradient simultaneously, we only have the option of
+ setting the patch type to patch and set all fields to zeroGradient in the
+ patches that should be empty.
+ 
+\end_layout
+
+\begin_layout Subsection
+vectorMagneticFoam (non multi-region solver)
+\end_layout
+
+\begin_layout Itemize
+Create a boundary layer to help the fields capture the discontinuity.
+ 
+\end_layout
+
+\begin_layout Itemize
+There is a problem with the interfaces.
+ The cyclic or cyclicAMI boundary condition on the fields works great without
+ motion, but when we impose a motion it simply does not work (I am not sure
+ why).
+ 
+\end_layout
+
+\begin_layout Itemize
+Apparently the problem is setting the displacement of a cyclic patch (AMI
+ BCs for the vector potential require a cyclic patch).
+ 
+\end_layout
+
+\begin_layout Itemize
+Apparently the cyclicACMI could resolve the problem since it has embedded
+ a wall path, but the machinery is very complex and since it is probably
+ going to be replaced in the future I think it is not worth it to invest
+ time in making it to work.
+ Use the multi-region variant instead.
+ 
+\end_layout
+
+\begin_layout Itemize
+The multiregion variant works because my boundary condition MVI is derived
+ from mappedPatch and not from cyclic.
+ 
+\end_layout
+
+\begin_layout Itemize
+I think the problem of non-moving interface could be solver programming
+ a new boundary condition like cyclic, it should not be difficult.
+ 
+\end_layout
+
+\begin_layout Itemize
+Check if the cyclic or cyclicAMI Bcs work for the case in which the motion
+ is not imposed but calculated.
+ 
+\end_layout
+
+\begin_layout Subsection
+Dynamic solver without multiregion
+\end_layout
+
+\begin_layout Subsubsection
+Error
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/Screenshot from 2021-03-14 22-17-52.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distorted mesh - convergence lost
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Distorted-mesh---3"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The problem is that when creating chi is reading a mur of 0, so it is dividing
+ by zero.
+ The minimum relative mu is 1, set it correctly in the domain with setFields.
+\end_layout
+
+\begin_layout Section
+Paraview
+\end_layout
+
+\begin_layout Itemize
+When loading multi-region cases it is mandatory to de-select the internalMesh
+ in the left panel.
+ Otherwise it duplicates the mesh and then the LIC does not work.
+\end_layout
+
+\begin_layout Section
+preCICE 
+\end_layout
+
+\begin_layout Subsection
+Calculix solid configuration
+\end_layout
+
+\begin_layout Itemize
+Create the model normally in HM
+\end_layout
+
+\begin_layout Itemize
+Create a node set with containing the nodes of the interface
+\end_layout
+
+\begin_layout Itemize
+Separated the files and include them in the beginning of the .inp.
+ The interface set is in a separated file (fsiSurf.nam)
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+*INCLUDE, INPUT=Solid/solid.msh
+\end_layout
+
+\begin_layout Plain Layout
+
+*INCLUDE, INPUT=Solid/solid.set
+\end_layout
+
+\begin_layout Plain Layout
+
+*INCLUDE, INPUT=Solid/fsiSurf.nam
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Add the section and material properties
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}
+\end_layout
+
+\begin_layout Plain Layout
+
+*SOLID SECTION, ELSET=solid, MATERIAL=solidMaterial
+\end_layout
+
+\begin_layout Plain Layout
+
+**HMNAME MATS          1 solidMaterial    11
+\end_layout
+
+\begin_layout Plain Layout
+
+*MATERIAL, NAME=solidMaterial
+\end_layout
+
+\begin_layout Plain Layout
+
+*DENSITY
+\end_layout
+
+\begin_layout Plain Layout
+
+8780.0    ,0.0       
+\end_layout
+
+\begin_layout Plain Layout
+
+*ELASTIC, TYPE = ISOTROPIC
+\end_layout
+
+\begin_layout Plain Layout
+
+1.1000E+11,0.3       ,0.0       
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Create a 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+mintinline{c++}{DIRECT}
+\end_layout
+
+\end_inset
+
+ step and add a force to a set called 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+mintinline{c++}{Nsurface}
+\end_layout
+
+\end_inset
+
+ that is in a .nam file.
+ As far as I have tested, this does not work with another name, except 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+mintinline{c++}{Nsurface}
+\end_layout
+
+\end_inset
+
+.
+ I appear to be hard coded in PRECICE.
+ However, I may be missing the specification of the surface somewhere.
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+*STEP, NLGEOM=NO, INC=10000000
+\end_layout
+
+\begin_layout Plain Layout
+
+*DYNAMIC,DIRECT
+\end_layout
+
+\begin_layout Plain Layout
+
+	1.E-4, 10.0
+\end_layout
+
+\begin_layout Plain Layout
+
+*BOUNDARY
+\end_layout
+
+\begin_layout Plain Layout
+
+	allNodes,1, ,0.0
+\end_layout
+
+\begin_layout Plain Layout
+
+	bcFixed,1,3,0.0
+\end_layout
+
+\begin_layout Plain Layout
+
+*CLOAD
+\end_layout
+
+\begin_layout Plain Layout
+
+	Nsurface, 1, 0.0
+\end_layout
+
+\begin_layout Plain Layout
+
+	Nsurface, 2, 0.0
+\end_layout
+
+\begin_layout Plain Layout
+
+	Nsurface, 3, 0.0
+\end_layout
+
+\begin_layout Plain Layout
+
+*NODE FILE
+\end_layout
+
+\begin_layout Plain Layout
+
+	U, RF
+\end_layout
+
+\begin_layout Plain Layout
+
+*EL FILE
+\end_layout
+
+\begin_layout Plain Layout
+
+	S
+\end_layout
+
+\begin_layout Plain Layout
+
+*END STEP
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Fluid OpenFOAM configuration
+\end_layout
+
+\begin_layout Itemize
+Create the solid mesh in HM.
+ 
+\end_layout
+
+\begin_layout Itemize
+Create element based surfaces for walls, inlets, outlets, and interfaces
+ using the 
+\emph on
+faces
+\emph default
+ command of HM.
+ 
+\end_layout
+
+\begin_layout Itemize
+Organize each surface in collectors, try to match naming of previous analysis
+ in order to use the same configuration files for the BCs.
+ 
+\end_layout
+
+\begin_layout Itemize
+Export the model using the OpenFOAM writer.
+ 
+\end_layout
+
+\begin_layout Itemize
+Copy the 0, system directories from older analysis and fill the correct
+ names and values.
+ 
+\end_layout
+
+\begin_layout Itemize
+The BC on the Fluid interface should be
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+fsiSurf
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	type 	 movingWallVelocity;
+\end_layout
+
+\begin_layout Plain Layout
+
+	value 	uniform (0 0 0);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Configure the adapter in /system/preciceDict
+\end_layout
+
+\begin_layout Subsection
+PreCICE Best Practices
+\end_layout
+
+\begin_layout Subsubsection
+From https://precice.discourse.group/t/restarting-coupled-fsi-simulation-with-prec
+ice/117/2
+\end_layout
+
+\begin_layout Standard
+Be sure to start from a pre-computed fluid field.
+ IQN-ILS has problems if forces and displacements are close to zero.
+ Then, everything becomes ill-conditioned.
+ Also be sure to use a convergence criterion in OpenFOAM of at least two
+ orders of magnitude stricter then the coupling convergence criterion.
+ For example, if you use a relative criterion of 1e-4 for the forces, the
+ velocities in OpenFOAM should convergence until a relative criterion of
+ 1e-6.
+ Otherwise, IQN-ILS does not get the “direction” right.
+\end_layout
+
+\begin_layout Subsubsection
+Restart preCICE with OFC coupling
+\end_layout
+
+\begin_layout Standard
+https://mailman.informatik.uni-stuttgart.de/pipermail/precice/2018/000219.html
+\end_layout
+
+\begin_layout Standard
+There are a few things in order to do a restart.
+ The most important is timestep and total simulation time.
+ There is a problem in CalculiX that if the simulation crashes before ending,
+ it doesn't write an output file ( the output file will be the name of your
+ .inp file followed by .rout instead).
+ To fix that for now, if you already know where the simulation needs to
+ be restarted from, you can set it to end there and write an output file.
+ As an example:
+\end_layout
+
+\begin_layout Standard
+If my time step is 1 second, and I want to restart from 10 seconds into
+ the simulation, my .inp file will have: *DYNAMIC,DIRECT 1,10 *BOUNDARY......
+\end_layout
+
+\begin_layout Standard
+Therefore my simulation will run with a timestep of 1 second until 10 seconds.
+ After this you will also need to change your preCICE configuration file.
+ In this example, there are 10 time steps in total, therefore the <max-timesteps
+ value="10" /> in the coupling scheme in the configuration file needs to
+ be set.
+ What this setup does is run the simulation for 10 timesteps, ends and writes
+ an output file.
+ Copy the output file and save it as a .rin file (literally just change .rout
+ to .rin) I suggest doing this in a new folder so you don't overwrite any
+ data.
+\end_layout
+
+\begin_layout Standard
+Now, for the restart, your .inp file must read: *RESTART,READ *STEP,NLGEOM.......
+\end_layout
+
+\begin_layout Standard
+You can ignore the *INCLUDE,*MATERIAL and those parameters as it is saved
+ in the .rin file.
+ Once again, if another restart is required after this, the same procedure
+ above is needed.
+ I know its a hassle for a work around, I just haven't been able to fix
+ it yet.
+\end_layout
+
+\begin_layout Standard
+I have also had some internal problems with CalculiX v2.13 not writing the
+ .rout file, so I have been using 2.10.
+ If this problem still persists, you can always send your .inp file and config
+ file that I can look at.
+ Otherwise I have the adapter in v2.10.
+\end_layout
+
+\begin_layout Section
+RIGID BODY FSI
+\end_layout
+
+\begin_layout Standard
+OpenFOAM has a set of libraries to solve rigid body FSI.
+\end_layout
+
+\begin_layout Standard
+There are 3 options in increasing order of computational effort: NO FSI
+ - just move the wall with a mesh motion solver.
+ (Works with every DyM Solver like pimpleDyMFoam - or in recent OF versions
+ pimpleFoam) rigid body FSI (again: Works with every DyM Solver) Full FSI
+ (needs external software or the fsi library in foam extend) Now full FSI
+ is too expensive for what you want to do unless you are interested in stresses
+ inside your solid.
+ OpenFOAM has two libraries for rigid bodies.
+ sixDoFRigidBodyMotion and rigidBodyDynamics.
+ These are nearly identical, however the rigidBodyDynamics library can solve
+ for more than one rigid body.
+ The sixDoFRigidBodyMotion on the other hand can be used as a boundary condition
+ for every mesh motion solver.
+ So there are small differences and they might at some point in the feature
+ be consolidated into one.
+ The rigid body fsi works with these steps calculate the rigid body motion
+ (including forces from the flow at the given patch) move the points of
+ the given patch by the distance calculated in 1 use a mesh motion solver
+ to move all the internal mesh nodes solve the flow The standard mesh motion
+ solver hard coded into both libraries is a slerp interpolation.
+ You can however use any motion solver you'd like and replace the boundary
+ for your object with sixDoFRigidBodyMotion.
+ 
+\end_layout
+
+\begin_layout Standard
+Why might this fail even if the mesh is still ok? You need to make sure
+ that 
+\end_layout
+
+\begin_layout Standard
+You use strong coupling.
+ Solve flow and rigid body motion more than once per time step to converge
+ the motion.
+ Hence use pimple (nOuterCorrectors >1) and (moveMeshOuterIters to solve
+ the rigid body motion more than once) and use relaxation for both solvers.
+ Make sure to specify nIter inside your dynamicMeshDict for implicit time
+ integrators like newmark and crankNicolson so that the rigid body is solved
+ more than once per time step Make sure that you can solve the rigid body
+ motion with the time step used.
+ The courant number limits only the fluid side.
+ Undamped rigid bodies however might need a much smaller time step.
+\end_layout
+
+\begin_layout Standard
+The important part is the iteration of the solid motion until the mesh is
+ not moving (displacement based convergence); this is crucial when the solid
+ executes large motions.
+ Always check that the integrator of the rigid body has sufficiently small
+ step.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+PIMPLE
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    momentumPredictor no;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    nOuterCorrectors 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+    nCorrectors      3;
+\end_layout
+
+\begin_layout Plain Layout
+
+    nNonOrthogonalCorrectors 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    correctPhi      yes;
+\end_layout
+
+\begin_layout Plain Layout
+
+    moveMeshOuterCorrectors yes;
+\end_layout
+
+\begin_layout Plain Layout
+
+    turbOnFinalIterOnly yes;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    pRefCell            0;
+\end_layout
+
+\begin_layout Plain Layout
+
+    pRefValue           1e5;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+MESH MOTION
+\end_layout
+
+\begin_layout Subsection
+Configure the mesh motion in the dynamicMeshDict
+\end_layout
+
+\begin_layout Standard
+There are several options, but almost no documentation .
+ Most cases found use the 
+\emph on
+inverseDistance 
+\emph default
+diffusivity model; this model imposes a diffusivity 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ as
+\begin_inset Formula 
+\[
+\gamma=\frac{1}{x}
+\]
+
+\end_inset
+
+being 
+\begin_inset Formula $x$
+\end_inset
+
+ the face normal distance (we can use 
+\emph on
+inversePointDistance
+\emph default
+ if we no not want to use face normal distances).
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Marginal
+status collapsed
+
+\begin_layout Plain Layout
+The actual magnitude of the diffusion does not matter, what matters is the
+ distribution.
+ 
+\end_layout
+
+\end_inset
+
+ motion algorithm calculates how much each face is moved using several manipulat
+ions of this diffusivity; for example, the quadratic method modifies this
+ diffusivity to obtain higher diffusivities near the wall (stiffer cells)
+ and avoid mesh distorsion in BLs.
+ this methods modifies the diffusivity as
+\begin_inset Formula 
+\[
+\bar{\gamma}=\sqrt{\gamma}=\sqrt{\frac{1}{x}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On the other hand, the exponential manipulator gives a variable diffusivity
+ as
+\begin_inset Formula 
+\[
+\bar{\gamma}=e^{\frac{-\alpha}{\gamma}}
+\]
+
+\end_inset
+
+being 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ a constant that we must determine in order to control the distribution
+ of diffusivity in our domain.
+ So, giving to this function the size of our domain we need to find 
+\begin_inset Formula $\alpha$
+\end_inset
+
+.
+ This method is good since we can control the penetration of the diffusion
+ coefficient in the boundary layer.
+ More diffusion means less mesh deformation (see a python routine I made).
+ 
+\end_layout
+
+\begin_layout Standard
+Since
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Large 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ means more diffusivity near the wall, therefore more rigidity with respect
+ to distanced points.
+\end_layout
+
+\end_inset
+
+ we solve a Laplacian equation, the magnitude of the diffusivity does not
+ matter, but its distribution does.
+ The next figure shows the distribution of diffusivity for linear, quadratic,
+ exponential with small alpha and exponential with large alpha.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/Screenshot from 2020-06-03 19-20-34.png
+	lyxscale 10
+	scale 20
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distorted mesh - convergence lost
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Distorted-mesh---2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+If we do not set a diffusivity for 
+\emph on
+walls
+\emph default
+ patch, the BL mesh in the wall is distorted.
+\end_layout
+
+\end_inset
+
+ following quadratic inverse setting works pretty well with boundary layer
+ meshes 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+motionSolver    displacementLaplacian;
+\end_layout
+
+\begin_layout Plain Layout
+
+displacementLaplacianCoeffs {
+\end_layout
+
+\begin_layout Plain Layout
+
+diffusivity  quadratic inverseDistance 2 (fsiSurf walls); 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+However, if the displacement of the tip is large, convergence may be lost
+ because of the generation of non-convex elements, as Figure 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "fig:Distorted-mesh--"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ depicts.
+ Note that in the configuration above we have added 
+\emph on
+walls
+\emph default
+ to the diffusivity specification since this maintains the wall boundary
+ elements undeformed.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/Screenshot from 2020-05-31 20-06-15.png
+	lyxscale 10
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distorted mesh - convergence lost
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Distorted-mesh--"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following option does not works either
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+motionSolver    displacementLaplacian;
+\end_layout
+
+\begin_layout Plain Layout
+
+displacementLaplacianCoeffs {
+\end_layout
+
+\begin_layout Plain Layout
+
+diffusivity  linear 2 (fsiSurf walls); 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This one either
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+motionSolver    displacementLaplacian;
+\end_layout
+
+\begin_layout Plain Layout
+
+displacementLaplacianCoeffs {
+\end_layout
+
+\begin_layout Plain Layout
+
+diffusivity   quadratic inverseDistance 3 (fsiSurf walls outlet);; 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This one either
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+motionSolver    displacementLaplacian;
+\end_layout
+
+\begin_layout Plain Layout
+
+displacementLaplacianCoeffs {
+\end_layout
+
+\begin_layout Plain Layout
+
+diffusivity  quadratic inversePointDistance 3 (fsiSurf walls outlet);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If we set correctly the 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ coefficient of the exponential diffusivity we can obtain a good result.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+motionSolver    displacementLaplacian;
+\end_layout
+
+\begin_layout Plain Layout
+
+displacementLaplacianCoeffs {
+\end_layout
+
+\begin_layout Plain Layout
+
+diffusivity  exponential 5.0E3 inversePointDistance 3 (fsiSurf walls outlet);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This setting gives this mesh
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/Screenshot from 2020-05-31 21-43-36.png
+	lyxscale 10
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Buclked mesh - convergence lost
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Distorted-mesh---1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Using 
+\begin_inset Marginal
+status open
+
+\begin_layout Plain Layout
+Buckling makes the Laplacian motion FEM solver of OF crash due to singlar
+ stiffness matrix, although all element are convex.
+\end_layout
+
+\end_inset
+
+ the exponential form effectively keeps the boundary layer untouched (the
+ diffusivity is very high near the layer); however, the mesh can be concentrated
+ in a very small region of the domain and the analysis may 
+\begin_inset Quotes eld
+\end_inset
+
+buckle
+\begin_inset Quotes erd
+\end_inset
+
+ due to bad elements, see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Distorted-mesh---1-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/meshWave.png
+	lyxscale 10
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distorted mesh - convergence lost
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Distorted-mesh---1-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You should increase the exponential coefficient 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ to allow more deformation of the mesh near the boundary layer; this will
+ be at the cost of crashes due to boundary layer deformation.
+ Also,
+\end_layout
+
+\begin_layout Section
+ERRORS
+\end_layout
+
+\begin_layout Subsection
+request for objectRegistry air from objectRegistry Dynamag_SN11_Multi_Coarseproc
+essor5 failed available objects of type objectRegistry are
+\end_layout
+
+\begin_layout Standard
+The problem is that the region air is not found, probably because it is
+ named Air.
+ Check the region names in using atom Ctrl+Shift+F.
+\end_layout
+
+\begin_layout Subsection
+Cannot find patchField entry for procBoundary1to0
+\end_layout
+
+\begin_layout Standard
+Sometimes we miss stupid things: this is solved with a simple statement
+ in each of the 0/* files.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+#include 
+\begin_inset Quotes eld
+\end_inset
+
+$WM_PROJECT_DIR/etc/caseDicts/setConstraintTypes"
+\end_layout
+
+\begin_layout Standard
+or
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+#includeEtc "caseDicts/setConstraintTypes"
+\end_layout
+
+\begin_layout Standard
+The file should be
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+	internalField uniform (0 0 0);
+\end_layout
+
+\begin_layout Plain Layout
+
+	boundaryField 
+\end_layout
+
+\begin_layout Plain Layout
+
+	{ 
+\end_layout
+
+\begin_layout Plain Layout
+
+		#includeEtc "caseDicts/setConstraintTypes"
+\end_layout
+
+\begin_layout Plain Layout
+
+		left 
+\end_layout
+
+\begin_layout Plain Layout
+
+			{ 
+\end_layout
+
+\begin_layout Plain Layout
+
+				type fixedValue; 
+\end_layout
+
+\begin_layout Plain Layout
+
+				value uniform (0 0 0); 
+\end_layout
+
+\begin_layout Plain Layout
+
+			}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Cannot find file "points" in directory "Air/polyMesh" in times "0" down
+ to constant
+\end_layout
+
+\begin_layout Standard
+There is no multi-region mesh.
+ It happens when we execute ./Allclean, it wipes out the mesh.
+ Also, check the solver is right in controlDict, sometimes a multiregion
+ solver
+\end_layout
+
+\begin_layout Subsection
+vectorMagneticFoam: cannot open case directory "/home/msaravia/OpenFOAM/msaravia
+-8/run/permeable/processor0"
+\end_layout
+
+\begin_layout Subsection
+patch 3 not empty type.
+ Patch type = wall 
+\end_layout
+
+\begin_layout Standard
+By default HM sets the empty patches to 
+\emph on
+wall
+\emph default
+ type.
+ Go to 
+\emph on
+constant/polyMesh/boundary
+\emph default
+ and change the necessary patches to 
+\emph on
+empty
+\emph default
+ type.
+\end_layout
+
+\begin_layout Subsection
+Fluid lost convergence 
+\end_layout
+
+\begin_layout Standard
+Check the Courant, large values may mean that the mesh is being distorted
+ (specially in the boundary layer) and non-convex elements appear.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Run with a very small time step and check the mesh motion.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Probably you need to change the algorithmic parameters in dynamicMeshDict.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Check the fsi interface boundary conditions, using movingWallVelocity gives
+ rare results in the velocity distribution in the first steps, it appears
+ it imposes a velocity in the fluid in the wrong direction; this bc is.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+fsiSurf
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+   type            movingWallVelocity;
+\end_layout
+
+\begin_layout Plain Layout
+
+   value           uniform (0 0 0);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+The noSlip condition has worked better, but probably the velocity is not
+ imposed, just the position is updated
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{minted}[linenos=true]{python}
+\end_layout
+
+\begin_layout Plain Layout
+
+fsiSurf
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+   type            noSlip;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{minted}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+---[precice] [31mERROR: [0m Send failed: write: Broken pipe
+\end_layout
+
+\begin_layout Standard
+One of the two participants crashed.
+ Check both models.
+ 
+\end_layout
+
+\begin_layout Subsection
+[0] --> FOAM FATAL IO ERROR: [0] "ill defined primitiveEntry starting at
+ keyword 'diffusivity' on line 30 and ending at line 62"
+\end_layout
+
+\begin_layout Standard
+A semi colon is missing at the end of the diffusivity line.
+ 
+\end_layout
+
+\begin_layout Subsection
+[9] #0 Foam::error::printStack(Foam::Ostream&) at ??:?
+\end_layout
+
+\begin_layout Standard
+Lost of convergence of OpenFOAM solver.
+ Check the model (specially distorted elements).
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "/home/msaravia/mega/papers/nonlinearDynamics"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
