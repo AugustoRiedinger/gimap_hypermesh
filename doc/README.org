@@ -290,5 +290,3 @@ You should also check that the patchs have been correctly created:
 #+CAPTION:export5
 #+LABEL:fig:export5
 [[file:../images/export5.png]]
-
-martín, te paso la documentación de lo que estuve haciendo de hypermesh
