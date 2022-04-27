@@ -21,22 +21,22 @@
   - [[#exporting-as-an-openfoam-case][Exporting as an OpenFOAM case]]
 
 ** About
-The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
+The objective of this project is to create boundary layers surrounding two rectangular objects with a continous and orthogonal mesh. The configuration is as follows:
 
 #+CAPTION:Configuration of the Magnet-Ferro test case
 #+LABEL:fig:magnet-ferroConfiguration
 [[file:../images/magnet-ferroConfiguration.png]]
 ** Creating the base model
-The base model (lines) were created with the CAD tool OnShape:
+The base model (lines) were created with the CAD online tool [[https://cad.onshape.com/signin][OnShape]]:
 
 #+CAPTION:Magnet-ferro OnShape base model
 #+LABEL:fig:magnet-ferroOnShape
 [[file:../images/magnet-ferroOnShape.png]]
 
-The main advantage of using this tool instead of Hypermesh is that the lines can be defined as a function of some variables. This is, for example, the size of the magnet has been defined in such a way that if we would like to change it, the boundary lines and the ferro would change accordingly mantaining the configuration.
+The main advantage of using this tool instead of Hypermesh is that the lines can be defined as a function of some variables. For example, the size of the magnet has been defined in such a way that if we would like to change it, the boundary lines and the ferro would change accordingly, mantaining the initial configuration.
 
 ** Importing the base model
-To import the base model to Hypermesh, you will need to first export it from OnShape. In order to just export the *lines*, you will have to export the *Sketch part*. This is, right click on the sketch (the pencil symbol; in my case =Top [Sketch]=) and then go to =Export as DXF/DWG ...=. You will then see a window as follows; we will need to export the model as a =DXF= file for Hypermesh to be able to read it.
+To import the base model to Hypermesh, you will need to first export it from OnShape. In order to just export the *lines*, you will have to export the *Sketch part*. This is, right click on the sketch (the pencil symbol; in this case =Top [Sketch]=) and then go to =Export as DXF/DWG ...=. You will then see a window as follows; we will need to export the model as a =DXF= file:
 
 #+CAPTION:Exporting the model from OnShape
 #+LABEL:fig:exportingOnShape
@@ -50,7 +50,7 @@ Now, in Hypermesh go to =File -> Import -> Geometry=. You will see this window i
 
 Then, with the folder symbol search for the =.dxf= file and then click in =Import= on the bottom left side.
 ** How to move in Hypermesh
-In order to affect the view you will have to always mantain the button =Ctrl= pressed in your keyboard.
+In order to change the view you will have to always mantain the button =Ctrl= pressed in your keyboard.
 
  + =Ctrl + Mouse Middle Button= resets the view.
  + =Ctrl + Mouse Wheel=: zoom in, zoom out.
@@ -59,7 +59,7 @@ In order to affect the view you will have to always mantain the button =Ctrl= pr
  + =Ctrl + Mouse Right Button=: move.
 
 ** Deleting lines
-The base model has extra lines used to define parameters for variables. They can be easily deleted pressing the =F2= key or the "/X/" symbol on the bottom panel (seventh symbol counting from the left). You will see the following screen:
+The base model has extra lines used to define parameters for variables. They can be easily deleted pressing the =F2= key or the =X= symbol on the bottom panel (seventh symbol counting from the left). You will see the following screen:
 
 #+CAPTION:Delete panel for deleting lines
 #+LABEL:fig:deletingLines
@@ -72,7 +72,7 @@ With the downward facing arrow to the left select =lines= instead of the default
 [[file:../images/deletingLines2.png]]
 
 After marking all the lines to delete, click on the =delete entity= button on the bottom right of the panel. The lines will then be deleted, and you can press =Esc= or the button =return= to go back to the main panel.
-**
+
 ** Creating the main surface
 On the main panel, look to right side and click on =2D=. Then, click the button =spline=. You should see the following panel:
 
@@ -94,7 +94,7 @@ You can now press the button =create= and the surface will be created. In order 
 
 Press =Esc= or =return= to go back to the main panel.
 ** Adjusting the tolerance
-This step is necessary in order to create tinier elements. Press the key =o= and you will be redirected to the following panel:
+This step is necessary in order to create smaller elements. Press the key =o= and you will be redirected to the following panel:
 
 #+CAPTION:Tolerance Geometry
 #+LABEL:fig:toleranceGeometry
@@ -108,29 +108,29 @@ Here, change the value of =cleanup tol= to =1e-7=. Then, press the =mesh= button
 
 We should change the =element size= to =1e-5= and the =node tol= to 1e-6. We can now press =Esc= and go back to the main panel.
 ** Trimming the lines
-We should now trim the lines to create the different surfaces. For this, press =Geom= on the right side of the main panel, and then go to =surface edit=. You should see a panel similar to this:
+We shall now trim the lines to create the different surfaces. For this, press =Geom= on the right side of the main panel, and then go to =surface edit=. You should see a panel similar to this:
 
 #+CAPTION:Surface Edit
 #+LABEL:fig:surfaceEdit
 [[file:../images/surfaceEdit.png]]
 
-Here, in the second column (middel), press the downward facing arrow and change the default =free lines= to just =lines=. Just below that, press the scroll button and change the default =along a vector= to =normal to the surface=. You should now have a panel that looks the same as the figure above.
+Here, in the second column (middle), press the downward facing arrow and change the default =free lines= to just =lines=. Just below that, press the scroll button and change the default =along a vector= to =normal to the surface=. You should now have a panel that looks the same as the figure above.
 
 The procedure to trim the lines is as follows:
 
-  1. Press the =surfs= button on the first column (to the left) and select the main surface. It should now appear in white.
+  + Press the =surfs= button on the first column (to the left) and select the main surface. It should now appear in white.
 
 #+CAPTION:Surface Edit Select Surface
 #+LABEL:fig:surfaceEditSelectSurface
 [[file:../images/surfaceEditSelectSurface.png]]
 
- 2. Press the =line= button on the mid column, and the press it again to select =displayed= and mar                                                                                                                                                                        k all the lines to trim.
+ + Press the =line= button on the mid column, and the press it again to select =displayed= and mark all the lines to trim.
 
 #+CAPTION:Surface Edit Select Lines
 #+LABEL:fig:surfaceEditSelectLines
 [[file:../images/surfaceEditSelectLines.png]]
 
- 3. Now we can press =trim= on the right side and the surface will be trimmed.
+ + Now we can press =trim= on the right side and the surface will be trimmed.
 
 #+CAPTION:Surface Edit Trim
 #+LABEL:fig:surfaceEditTrim
@@ -217,7 +217,7 @@ Press =comp= on the left side, and select the =volume= collector:
 
 Now, press =select= on the right side. It will redirect you to the previous menu, where you can press =find faces=. You should note that the model changed color.
 
-Pressing the letter =d= on you keyboard, you can access the display menu, where you can see that a new collector =faces^= has been automatically created. Here, unselect the =volume= collector. For the following part, you should have displayed only the =faces^= collector:
+Pressing the letter =d= on you keyboard, you can access the display menu, where you can see that a new collector =faces^= has been automatically created. Here, unselect the =volume= collector. For the following part, you should display just the =faces^= collector:
 
 #+CAPTION:faces4
 #+LABEL:fig:faces4
@@ -271,7 +271,7 @@ Leave the =File type= as =CFD=, and change the =Solver type= from =Fluent= to =O
 #+LABEL:fig:export2
 [[file:../images/export2.png]]
 
-Now, press the letter =d= in the keyboard to go to the =display= menu. Here, you must select the =volume= collector, and unselect the =faces^= collector:
+Now, press the letter =d= in the keyboard to access the =display= menu. Here, you must select the =volume= collector, and unselect the =faces^= collector:
 
 #+CAPTION:export3
 #+LABEL:fig:export3
