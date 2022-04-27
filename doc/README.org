@@ -227,3 +227,33 @@ We shall now create collector for the different patches. The procedure is the sa
 #+CAPTION:faces5
 #+LABEL:fig:faces5
 [[file:../images/faces5.png]]
+
+We can now start assigning the actual faces to the different components. For this, in the =Tool= panel, go to =organize=. You should see the following menu:
+
+#+CAPTION:faces6
+#+LABEL:fig:faces6
+[[file:../images/faces6.png]]
+
+Now, we will select the elements =by face=. For this, you must pick two random elements in some face:
+
+#+CAPTION:faces7
+#+LABEL:fig:faces7
+[[file:../images/faces7.png]]
+
+In the panel, press the =elems= button, and then select the option =by face=. You should see that just one face has been selected with this method:
+
+#+CAPTION:faces8
+#+LABEL:fig:faces8
+[[file:../images/faces8.png]]
+
+In destination component, select one of the patches (=front=, for example), and then select =move=. You should see that the selected face has now the colour of the respective collector:
+
+#+CAPTION:faces0
+#+LABEL:fig:faces9
+[[file:../images/faces9.png]]
+
+You shall repeat the same method for all the faces:
+
+#+CAPTION:faces10
+#+LABEL:fig:faces10
+[[file:../images/faces10.png]]
