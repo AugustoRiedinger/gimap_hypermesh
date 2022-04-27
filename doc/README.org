@@ -2,10 +2,10 @@
 #+AUTHOR: A. Riedinger
 #+STARTUP: folded
 
-* Case: Permeable with Ferro and Boundary Layers
+* Case: Magnet+Ferro and Boundary Layers
 
 ** Table of contents :toc:
-- [[#case-permeable-with-ferro-and-boundary-layers][Case: Permeable with Ferro and Boundary Layers]]
+- [[#case-magnetferro-and-boundary-layers][Case: Magnet+Ferro and Boundary Layers]]
   - [[#about][About]]
   - [[#creating-the-base-model][Creating the base model]]
   - [[#importing-the-base-model][Importing the base model]]
