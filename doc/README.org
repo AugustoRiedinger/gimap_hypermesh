@@ -17,6 +17,7 @@
   - [[#meshing-with-automesh][Meshing with automesh]]
   - [[#creating-a-collector-for-the-volume][Creating a collector for the volume]]
   - [[#drag---creating-the-3d-model][Drag - Creating the 3D model]]
+  - [[#creating-the-faces-of-the-volume][Creating the faces of the volume]]
 
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
@@ -196,3 +197,21 @@ We can now press the =drag+= button and the end result should look like this:
 #+CAPTION:drag2
 #+LABEL:fig:drag2
 [[file:../images/drag3.png]]
+
+Note that the model is now blue. This is because we sent all the elements in the drag to the =volume= collector.
+** Creating the faces of the volume
+We shall now define the different faces of the volume. This step is necessary in order to assign boundary conditions in OpenFOAM to different patches.
+
+Go to the =Tool= panel and click on =faces=. You should see the following menu:
+
+#+CAPTION:faces1
+#+LABEL:fig:faces1
+[[file:../images/faces1.png]]
+
+On the left side, change =comps= to =elems=. Now, click on =elems= and select =by config=. On =config \==, select =quad4=:
+
+#+CAPTION:faces2
+#+LABEL:fig:faces2
+[[file:../images/faces2.png]]
+
+You can now press =select entities=. It will redirect you to the previous menu, where you can now press =find faces=.
