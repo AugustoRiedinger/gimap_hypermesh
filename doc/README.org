@@ -18,6 +18,7 @@
   - [[#creating-a-collector-for-the-volume][Creating a collector for the volume]]
   - [[#drag---creating-the-3d-model][Drag - Creating the 3D model]]
   - [[#creating-the-faces-of-the-volume][Creating the faces of the volume]]
+  - [[#exporting-as-an-openfoam-case][Exporting as an OpenFOAM case]]
 
 ** About
 The sole objective of this case is to create the boundary layers of a continous and orthogonal mesh surrounding the magnet and ferro. The configuration is as follows:
@@ -252,8 +253,40 @@ In destination component, select one of the patches (=front=, for example), and 
 #+LABEL:fig:faces9
 [[file:../images/faces9.png]]
 
-You shall repeat the same method for all the faces:
+You shall repeat the same method for all faces:
 
 #+CAPTION:faces10
 #+LABEL:fig:faces10
 [[file:../images/faces10.png]]
+** Exporting as an OpenFOAM case
+We will now export the geometry as an OpenFOAM case. Go to =File -> Export -> Solver deck=, you should see the following menu on the left:
+
+#+CAPTION:export1
+#+LABEL:fig:export1
+[[file:../images/export1.png]]
+
+Leave the =File type= as =CFD=, and change the =Solver type= from =Fluent= to =OpenFOAM=. Below that, in =File=, you can select a folder to export the geometry:
+
+#+CAPTION:export2
+#+LABEL:fig:export2
+[[file:../images/export2.png]]
+
+Now, press the letter =d= in the keyboard to go to the =display= menu. Here, you must select the =volume= collector, and unselect the =faces^= collector:
+
+#+CAPTION:export3
+#+LABEL:fig:export3
+[[file:../images/export3.png]]
+
+You can now press the =Export= button on the export menu. A message indicating that the OpenFOAM case was succesfully created should appear.
+
+In order to verify that the geometry was exported correctly, open a terminal and go to the directory where the case was exported. To open the case with Paraview, create a dummy file as =touch foam.foam=, and then open the file as =paraview foam.foam &=. You should see the mesh and geometry:
+
+#+CAPTION:export4
+#+LABEL:fig:export4
+[[file:../images/export4.png]]
+
+You should also check that the patchs have been correctly created:
+
+#+CAPTION:export5
+#+LABEL:fig:export5
+[[file:../images/export5.png]]
