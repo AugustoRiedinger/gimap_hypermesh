@@ -208,10 +208,22 @@ Go to the =Tool= panel and click on =faces=. You should see the following menu:
 #+LABEL:fig:faces1
 [[file:../images/faces1.png]]
 
-On the left side, change =comps= to =elems=. Now, click on =elems= and select =by config=. On =config \==, select =quad4=:
+Press =comp= on the left side, and select the =volume= collector:
 
-#+CAPTION:faces2
-#+LABEL:fig:faces2
-[[file:../images/faces2.png]]
+#+CAPTION:faces3
+#+LABEL:fig:faces3
+[[file:../images/faces3.png]]
 
-You can now press =select entities=. It will redirect you to the previous menu, where you can now press =find faces=.
+Now, press =select= on the right side. It will redirect you to the previous menu, where you can press =find faces=. You should note that the model changed color.
+
+Pressing the letter =d= on you keyboard, you can access the display menu, where you can see that a new collector =faces^= has been automatically created. Here, unselect the =volume= collector. For the following part, you should have displayed only the =faces^= collector:
+
+#+CAPTION:faces4
+#+LABEL:fig:faces4
+[[file:../images/faces4.png]]
+
+We shall now create collector for the different patches. The procedure is the same as we did with the =volume= collector: press the =Components= button, and then change the name and colour for the six faces. We will call them =top=, =bottom=, =right=, =left=, =front= and =back=, as per OpenFOAM nomenclature. Pressing =d= we can check if they were created correctly:
+
+#+CAPTION:faces5
+#+LABEL:fig:faces5
+[[file:../images/faces5.png]]
